@@ -1,0 +1,127 @@
+@import 'leaflet/dist/leaflet.css';
+
+.ukca_map-icon {
+  position: fixed;
+  box-sizing: border-box;
+  top: 10px;
+  left: 10px;
+  z-index: 99999;
+  height: 50px;
+  width: 50px;
+  padding: 5px 4px 5px 6px;
+  border-radius: 25px;
+  border: 2px solid #ccc;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  cursor: pointer;
+}
+
+.ukca_map-icon > svg {
+  position: relative;
+  display: block;
+  height: 30px;
+  width: 30px;
+  margin: auto;
+}
+
+.ukca_overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 99999;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: opacity ease-in-out 0.5s;
+  opacity: 1;
+}
+
+.ukca_overlay.hide  {
+  opacity: 0;
+}
+
+.ukca_modal {
+  position: absolute;
+  padding: 20px;
+  height: 80vh;
+  width: 80vw;
+  left: 10vw;
+  top: 10vh;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+  transform: translate(0, 0) scale(1);
+}
+
+.ukca_modal.show {
+  animation: show .5s;
+}
+
+@keyframes show {
+  from {
+    z-index: -1;
+    transform: translate(calc(100vw/-2), calc(100vh/-2)) scale(0);
+  } to {
+    z-index: 2;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.ukca_modal.hide {
+  z-index:-1;
+  /* opacity: 0; */
+  animation: hide .5s;
+  transform: scale(0);
+}
+
+.ukca_modal.hide {
+  transform: translate(calc(100vw/-2), calc(100vh/-2)) scale(0);
+}
+
+@keyframes hide {
+  from {
+    z-index: 2;
+    transform: translate(0, 0) scale(1);
+  } to {
+    z-index: -1;
+    transform: translate(calc(100vw/-2), calc(100vh/-2)) scale(0);
+  }
+}
+
+.ukca_modal .close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  border-radius: 15px;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  cursor: pointer;
+  background-color: white;
+}
+
+.ukca_trad-6 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: x-small;
+  text-align: right;
+  padding-top: 2px;
+}
+
+.ukca_map {
+  position: relative;
+  height: 100%;
+}
+
+input#formatted_address {
+  position: absolute;
+  top: 20px;
+  left: 100px;
+  height: 40px;
+  z-index: 999;
+  font-size: 20px;
+  padding: 2px 5px;
+  border: 1px solid rgb(224, 224, 224);
+  border-radius: 5px;
+}
