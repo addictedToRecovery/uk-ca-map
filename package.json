@@ -19,7 +19,7 @@
     "json-loader": "^0.5.7",
     "mini-css-extract-plugin": "^2.1.0",
     "rimraf": "^2.6.3",
-    "ts-loader": "^5.3.3",
+    "ts-loader": "^9.2.6",
     "tslint": "^5.12.1",
     "typescript": "^3.2.4",
     "webpack": "^5.54.0",
