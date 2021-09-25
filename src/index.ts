@@ -1,9 +1,8 @@
 import * as $ from 'jquery';
 import * as L from 'leaflet';
 
-import * as closeIcon from './assets/close-icon.svg';
-import * as mapIcon from './assets/map.svg';
-import * as geojson from './assets/ukca-area-boundaries-simple.geojson';
+import closeIcon from './assets/close-icon.svg';
+import mapIcon from './assets/map.svg';
 import './assets/style.css';
 
 export {};
@@ -27,9 +26,13 @@ const colorMap = {
 
 const classSuffix = 'ukca';
 const accessToken = 'pk.eyJ1IjoiY2F1ay1pdC1jb21tIiwiYSI6ImNqbGFxeGMzMzBiZXoza3FpZHVyZDkyNWEifQ.SScIx3L9iahy060GEGkR9w';
+let mapAdded = false;
 
-const addMap = (el: HTMLElement) => {
-  // let marker: L.Marker;
+const addMap = async (el: HTMLElement) => {
+  const geojson = await import(
+    './assets/ukca-area-boundaries-simple.geojson'
+    /* webpackChunkName: "map-data" */
+    /* webpackMode: "lazy-once" */);
 
   const map = L.map(el, {
     crs: L.CRS.EPSG3857,
@@ -63,7 +66,6 @@ const addMap = (el: HTMLElement) => {
   };
 
   const resetHighlight = (evt) => {
-    // console.log(evt);
     L.DomEvent.stop(evt);
     areasLayer.resetStyle(evt.target);
   };
@@ -94,7 +96,6 @@ const addMap = (el: HTMLElement) => {
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        // click: featureClickEventBuilder('https://centralukca.org'),
       });
     },
   }).addTo(map);
@@ -119,30 +120,20 @@ const addMap = (el: HTMLElement) => {
         // language: $tspiv_language,
       },
       (geocoded) => {
-        // console.log(geocoded);
         const result = geocoded.results[0];
         $(this).val(result.formatted_address);
         const {lat, lng} = result.geometry.location;
         const latlng = L.latLng(lat, lng);
 
-        // if (marker) {
-        //   marker.setLatLng(latlng);
-        // } else {
-        //   marker = L.marker(latlng).addTo(map);
-        // }
-
         const point = map.latLngToContainerPoint(latlng);
         const mapPos = map.getContainer().getBoundingClientRect();
         const viewportPoint = L.point(mapPos.left, mapPos.top).add(point);
         const featureEl = document.elementFromPoint(viewportPoint.x, viewportPoint.y);
-        // console.log(featureEl);
 
         areasLayer.resetStyle();
 
         for (const layer of areasLayer.getLayers()) {
-          // console.log(layer);
           if ((layer as any)._path === featureEl) {
-            // console.log('found!!');
             (layer as any).setStyle(highlightStyle);
             layer.openPopup(latlng);
           } else if (layer.isPopupOpen()) {
@@ -171,7 +162,7 @@ const addMap = (el: HTMLElement) => {
 };
 
 window.UKCA = {
-  init: () => {
+  init: async () => {
     const mapIconEl = document.createElement('div');
     mapIconEl.innerHTML = `${mapIcon}`;
     mapIconEl.classList.add(`${classSuffix}_map-icon`);
@@ -216,8 +207,11 @@ window.UKCA = {
       hideModal();
     });
 
-    $(mapIconEl).on('click', () => {
+    $(mapIconEl).on('click', async () => {
       showModal();
+      if (!mapAdded) {
+        await addMap(map);
+      }
     });
 
     const map = document.createElement('div');
@@ -227,13 +221,11 @@ window.UKCA = {
     $(modal).append(closeIconEl);
     $(modal).append(map);
     $(document.body).append(overlay);
-    addMap(map);
 
     const text = document.createElement('div');
     text.classList.add(`${classSuffix}_trad-6`);
     text.innerHTML = 'In the spirit of Tradition Six, C.A. is not allied with any sect, denomination, politics, organisation or institution.';
     modal.appendChild(text);
-
     hideModal(false);
 
     const params = new URLSearchParams(window.location.search);
@@ -247,5 +239,6 @@ window.UKCA = {
     }
 
     showModal();
+    await addMap(map);
   },
 };

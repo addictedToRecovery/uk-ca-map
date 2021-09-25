@@ -1,16 +1,11 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "removeComments": true,
+    "esModuleInterop": true,
+    "lib": ["es5", "es2015", "es2016", "dom"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "removeComments": false,
     "preserveConstEnums": true,
-    "sourceMap": false,
-    "target": "es6",
-    "allowJs": true,
-    "outDir": "dist/js",
-    "lib": [      
-      "dom",
-      "es2017",
-    ],
   },
   "include": [
     "src/**/*.ts",

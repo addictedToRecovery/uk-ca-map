@@ -1,23 +1,15 @@
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const NODE_ENV = process.env.NODE_ENV;
-if (!NODE_ENV) throw new Error('NODE_ENV not defined');
-if (NODE_ENV !== 'production' && NODE_ENV !== 'development')
-  throw new Error('NODE_ENV invalid: "production" or "development" only');
-
-const production = NODE_ENV === 'production';
-
 module.exports = {
-  mode: NODE_ENV,
   entry: [
     './src/index.ts'
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
+    chunkFilename: '[name].chunk.js',
     publicPath: '',
   },
   resolve: {
@@ -27,20 +19,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        use: [
-          { 
-            loader: 'babel-loader',
-          }
-        ]
-      },
-      {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: [
-          { 
-            loader: 'babel-loader',
-          },
           {
             loader: 'ts-loader'
           },
@@ -82,7 +63,7 @@ module.exports = {
     new MiniCssExtractPlugin(),
  ],
   
-  devServer: production ? undefined : {
+  devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     host: '127.0.0.1',
@@ -93,5 +74,5 @@ module.exports = {
     historyApiFallback: true,
     disableHostCheck: true
   },
-  devtool: production ? undefined : 'source-map'
+  devtool: 'source-map'
 };
