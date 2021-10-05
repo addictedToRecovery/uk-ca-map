@@ -25,10 +25,9 @@ const colorMap = {
 };
 
 const classSuffix = 'ukca';
-const accessToken = 'pk.eyJ1IjoiY2F1ay1pdC1jb21tIiwiYSI6ImNqbGFxeGMzMzBiZXoza3FpZHVyZDkyNWEifQ.SScIx3L9iahy060GEGkR9w';
 let mapAdded = false;
 
-const addMap = async (el: HTMLElement) => {
+const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: string) => {
   const geojson = await import(
     './assets/ukca-area-boundaries-simple.geojson'
     /* webpackChunkName: "map-data" */
@@ -45,7 +44,7 @@ const addMap = async (el: HTMLElement) => {
     id: 'mapbox/streets-v11',
     tileSize: 512,
     zoomOffset: -1,
-    accessToken,
+    accessToken: mapboxApiKey,
   }).addTo(map);
 
   const highlightStyle: L.PathOptions = {
@@ -68,12 +67,6 @@ const addMap = async (el: HTMLElement) => {
   const resetHighlight = (evt) => {
     L.DomEvent.stop(evt);
     areasLayer.resetStyle(evt.target);
-  };
-
-  const featureClickEventBuilder = (url) => {
-    return () => {
-      window.location.assign(url);
-    };
   };
 
   const areasLayer = L.geoJSON(geojson as any, {
@@ -114,10 +107,9 @@ const addMap = async (el: HTMLElement) => {
     $.getJSON(
       'https://maps.googleapis.com/maps/api/geocode/json',
       {
-        key: 'AIzaSyA_ZOgRvq1KZxbPyX1316vFbWUykdnXYmo',
+        key: googleApiKey,
         address: inputVal,
         region: 'uk',
-        // language: $tspiv_language,
       },
       (geocoded) => {
         const result = geocoded.results[0];
@@ -140,16 +132,6 @@ const addMap = async (el: HTMLElement) => {
             layer.closePopup();
           }
         }
-
-        // map.flyTo(
-        //   latlng,
-        //   8,
-        //   {
-        //     animate: false,
-        //     // duration: 1,
-        //   },
-        // );
-        // map.panTo(latlng);
       },
     );
   })
@@ -162,7 +144,7 @@ const addMap = async (el: HTMLElement) => {
 };
 
 window.UKCA = {
-  init: async () => {
+  init: async (googleApiKey: string, mapboxApiKey: string) => {
     const mapIconEl = document.createElement('div');
     mapIconEl.innerHTML = `${mapIcon}`;
     mapIconEl.classList.add(`${classSuffix}_map-icon`);
@@ -210,7 +192,7 @@ window.UKCA = {
     $(mapIconEl).on('click', async () => {
       showModal();
       if (!mapAdded) {
-        await addMap(map);
+        await addMap(map, googleApiKey, mapboxApiKey);
       }
     });
 
@@ -239,6 +221,6 @@ window.UKCA = {
     }
 
     showModal();
-    await addMap(map);
+    await addMap(map, googleApiKey, mapboxApiKey);
   },
 };

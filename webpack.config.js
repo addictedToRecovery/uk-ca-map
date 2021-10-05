@@ -10,7 +10,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     chunkFilename: '[name].chunk.js',
-    publicPath: '',
+    publicPath: 'auto',
   },
   resolve: {
     extensions: ['.ts', '.js'],
