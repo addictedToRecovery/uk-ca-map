@@ -59,20 +59,17 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/index.html'),
+      googleApiKey: process.env.GOOGLE_API_KEY,
+      mapboxApiKey: process.env.MAPBOX_API_KEY,
     }),
     new MiniCssExtractPlugin(),
- ],
-  
+  ],
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
     compress: true,
     host: '127.0.0.1',
     port: 9001,
     open: false,
-    // noInfo: true,
-    // serve index.html in place of 404 responses to allow HTML5 history
     historyApiFallback: true,
-    disableHostCheck: true
   },
   devtool: 'source-map'
 };

@@ -1,3 +1,5 @@
+import { FeatureCollection } from 'geojson';
+import palette from 'google-palette';
 import * as $ from 'jquery';
 import * as L from 'leaflet';
 
@@ -14,15 +16,15 @@ declare global {
 }
 
 const defaultColor = 'rgb(255, 255, 255)';
-const colorMap = {
-  'CAUK Area': 'rgba(0, 255, 0)',
-  'Central UK Area': 'rgba(255, 255, 0)',
-  'Ireland Area': 'rgb(0, 128, 0)',
-  'London Area': 'rgba(0, 0, 255)',
-  'Scotland Area': 'rgba(0, 0, 64)',
-  'Wales Area': 'rgba(255, 0, 0)',
-  'West Country Area': 'rgb(255, 0, 255)',
-};
+// const colorMap = {
+//   'CAUK Area': 'rgba(0, 255, 0)',
+//   'Central UK Area': 'rgba(255, 255, 0)',
+//   'Ireland Area': 'rgb(0, 128, 0)',
+//   'London Area': 'rgba(0, 0, 255)',
+//   'Scotland Area': 'rgba(0, 0, 64)',
+//   'Wales Area': 'rgba(255, 0, 0)',
+//   'West Country Area': 'rgb(255, 0, 255)',
+// };
 
 const classSuffix = 'ukca';
 let mapAdded = false;
@@ -31,7 +33,20 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
   const geojson = await import(
     './assets/ukca-area-boundaries-simple.geojson'
     /* webpackChunkName: "map-data" */
-    /* webpackMode: "lazy-once" */);
+    /* webpackMode: "lazy" */) as any as FeatureCollection;
+
+  const colorMap = {};
+  for (const feature of geojson.features) {
+    if (!colorMap[feature.properties.area]) {
+      colorMap[feature.properties.area] = "";
+    }
+  }
+
+  const colors = palette('cb-Set1', Object.keys(colorMap).length);
+
+  for (let i =0; i < colors.length; i++) {
+    colorMap[Object.keys(colorMap)[i]] = `#${colors[i]}`;
+  }
 
   const map = L.map(el, {
     crs: L.CRS.EPSG3857,
@@ -76,7 +91,7 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
         fillColor: feature.properties.area in colorMap ? colorMap[feature.properties.area] : defaultColor,
         weight: 2,
         opacity: 0.5,
-        fillOpacity: 0.5,
+        fillOpacity: 0.6,
         fill: true,
       };
     },

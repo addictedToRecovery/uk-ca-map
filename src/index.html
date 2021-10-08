@@ -16,7 +16,9 @@
   <%= htmlWebpackPlugin.tags.bodyTags %>
   <script>
     document.body.onload = () => {
-      UKCA.init();
+      UKCA.init(
+        '<%= htmlWebpackPlugin.options.googleApiKey %>',
+        '<%= htmlWebpackPlugin.options.mapboxApiKey %>');
     }
   </script>
 </body>

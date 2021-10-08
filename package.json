@@ -8,7 +8,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist/*",
-    "serve": "yarn clean && webpack --mode=development serve",
+    "start": "webpack serve --mode=development",
     "dist": "yarn clean && webpack --mode=production"
   },
   "devDependencies": {
@@ -27,6 +27,7 @@
     "webpack-dev-server": "^4.2.1"
   },
   "dependencies": {
+    "google-palette": "^1.1.0",
     "jquery": "^3.6.0",
     "leaflet": "^1.7.1"
   }
