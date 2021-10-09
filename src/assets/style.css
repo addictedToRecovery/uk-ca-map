@@ -43,10 +43,12 @@
 .ukca_modal {
   position: absolute;
   padding: 20px;
-  height: 80vh;
-  width: 80vw;
   left: 10vw;
-  top: 10vh;
+  right: 10vw;
+  top: 5vh;
+  bottom: 5vh;
+  max-width: 768px;
+  margin: auto auto;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -125,3 +127,55 @@ input#formatted_address {
   border: 1px solid rgb(224, 224, 224);
   border-radius: 5px;
 }
+
+.ukca_continue-button {
+  display: none;
+  background-color: #3e5da5;
+  color: white;
+  border: 0;
+  border-radius: 5px;
+  font-size: 20px;
+  width: 80vw;
+  margin: auto auto;
+  padding: 10px;
+  margin-top: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .ukca_modal {
+    padding: 0 0 100px 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+
+  input#formatted_address {
+    top: auto;
+    left: 5vw;
+    right: 5vw;
+    bottom: 50px;
+    width: 90vw;
+  }
+
+  .ukca_modal .close {
+    top: 10px;
+    right: 10px;
+  }
+
+  .ukca_trad-6 {
+    text-align: center;
+  }
+
+  .ukca_continue-button {
+    display: block;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {} 

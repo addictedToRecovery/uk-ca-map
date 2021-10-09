@@ -50,8 +50,8 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
 
   const map = L.map(el, {
     crs: L.CRS.EPSG3857,
-    // minZoom: 5,
-  }).setView([54.093409058179, -4.855957], 6);
+    minZoom: 4,
+  }).setView([54.093409058179, -4.855957], screen.width > 600 ? 6 : 5);
 
   L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -223,6 +223,12 @@ window.UKCA = {
     text.classList.add(`${classSuffix}_trad-6`);
     text.innerHTML = 'In the spirit of Tradition Six, C.A. is not allied with any sect, denomination, politics, organisation or institution.';
     modal.appendChild(text);
+
+    const continueMobile = document.createElement('button');
+    continueMobile.classList.add(`${classSuffix}_continue-button`);
+    continueMobile.innerHTML = `Continue to ${window.location.host}`;
+    modal.appendChild(continueMobile);
+
     hideModal(false);
 
     const params = new URLSearchParams(window.location.search);
