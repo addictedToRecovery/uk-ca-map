@@ -229,6 +229,11 @@ window.UKCA = {
     continueMobile.innerHTML = `Continue to ${window.location.host}`;
     modal.appendChild(continueMobile);
 
+    $(continueMobile).on('click', () => {
+      window.localStorage.setItem('ukca_closed', '1');
+      hideModal();
+    });
+
     hideModal(false);
 
     const params = new URLSearchParams(window.location.search);

@@ -144,6 +144,7 @@ input#formatted_address {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 /* Extra small devices (phones, 600px and down) */
