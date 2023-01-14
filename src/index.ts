@@ -110,7 +110,11 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
 
   const inputEl = document.createElement('input');
   inputEl.id = 'formatted_address';
+  inputEl.type = 'text'
   inputEl.placeholder = "I'm looking for meetings in...";
+  inputEl.onmouseup = () => {
+    inputEl.focus(); // fixes bug on iOS
+  };
   el.appendChild(inputEl);
 
   $('input#formatted_address')
