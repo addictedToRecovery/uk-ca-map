@@ -37,8 +37,8 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
 
   const colorMap = {};
   for (const feature of geojson.features) {
-    if (!colorMap[feature.properties.area]) {
-      colorMap[feature.properties.area] = "";
+    if (!colorMap[feature.properties.Name]) {
+      colorMap[feature.properties.Name] = "";
     }
   }
 
@@ -88,7 +88,7 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
     style: (feature) => {
       return {
         color: 'rgba(0,0,0,0)',
-        fillColor: feature.properties.area in colorMap ? colorMap[feature.properties.area] : defaultColor,
+        fillColor: feature.properties.Name in colorMap ? colorMap[feature.properties.Name] : defaultColor,
         weight: 2,
         opacity: 0.5,
         fillOpacity: 0.6,
@@ -99,7 +99,7 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
       return L.Projection.SphericalMercator.unproject(new L.Point(coords[0], coords[1]));
     },
     onEachFeature: (feature, layer) => {
-      const popupText = `<b>${feature.properties.area}</b><br/><a href="${feature.properties.url}?ukca_redirect">${feature.properties.url}</a>`;
+      const popupText = `<b>${feature.properties.Name}</b><br/><a href="${feature.properties.url}?ukca_redirect">${feature.properties.url}</a>`;
       layer.bindPopup(popupText);
       layer.on({
         mouseover: highlightFeature,
