@@ -124,11 +124,10 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
       .trim();
 
     $.getJSON(
-      'https://maps.googleapis.com/maps/api/geocode/json',
+      'https://geocode.maps.co/search',
       {
-        key: googleApiKey,
-        address: inputVal,
-        region: 'uk',
+        q: inputVal,
+        country: 'uk',
       },
       (geocoded) => {
         const result = geocoded.results[0];
