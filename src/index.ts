@@ -129,10 +129,15 @@ const addMap = async (el: HTMLElement, googleApiKey: string, mapboxApiKey: strin
         q: inputVal,
         country: 'uk',
       },
-      (geocoded) => {
-        const result = geocoded.results[0];
-        $(this).val(result.formatted_address);
-        const {lat, lng} = result.geometry.location;
+      (results) => {
+        if (results.length == 0) {
+          console.error("No results");
+          return;
+        }
+        const result = results[0];
+        $(this).val(result.display_name);
+        const lat = result.lat;
+        const lng = result.lon;
         const latlng = L.latLng(lat, lng);
 
         const point = map.latLngToContainerPoint(latlng);
